@@ -38,6 +38,8 @@
 
 Training folder structure
 
+![training folder structure](https://github.com/Amir22010/myassignment/blob/master/images/trainingfolderstructure.png)
+
 All training instructions present in `siamese.ipynb` google colab file.
 
 [Training notebook](https://colab.research.google.com/drive/1_H8cr-oFkQ2GlFVRyMnIbyKVX3fl5SnP?usp=sharing)
@@ -49,9 +51,11 @@ All training instructions present in `siamese.ipynb` google colab file.
 
 #### main page - index.html
 
+![index](https://github.com/Amir22010/myassignment/blob/master/images/mainpage.png)
 
 #### register page - create.html
 
+![register](https://github.com/Amir22010/myassignment/blob/master/images/register.png)
 
 ### How to use the application instructions
 - main page - index.html
