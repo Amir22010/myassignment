@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+    />
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/index.css') }}">
+    <title>My Project Only for Interview Purpose</title>
+  </head>
+  <body>
+    <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <div class="ui one column centered grid" style="margin: 100px 0">
+      <div class="app_container">
+        <h3>One-Shot learning technique through Siamese network</h3>
+        <div class="ui card">
+          <div class="stream" id="webcam">
+          </div>
+          <script language="JavaScript">
+            Webcam.set({
+              width: 320,
+              height: 240,
+              // device capture size
+			        dest_width: 320,
+			        dest_height: 240,
+			        // final cropped size
+              image_format: 'jpeg',
+              jpeg_quality: 90
+            });
+            Webcam.attach( '#webcam' );
+          </script>
+          <div class="content">
+            <div class="button_container">
+                <button class="ui primary button" id="capture">Authenticate</button>
+              <button class="ui button" id="stop">Stop Webcam Feed</button>
+            </div>
+            <div class=class="ui sub header">
+              <div id="console"></div>
+          </div>
+            <div class="description">
+              <nav>
+                <a href="{{ url_for('index') }}">Refresh</a>
+                <p></p>
+                <p></p>
+                <a href="{{ url_for('register') }}">Register</a>
+            </nav>
+            <div class="content">
+                  <h2>{% block title1 %} Results {% endblock %}</h2>
+                  {% for result in results %}
+                      <div class='result'>
+                          <p><b>{{ result['result'] }}</b></p>
+                          <p>{{ result['created'] }}</p>
+                      </div>
+                  {% endfor %}
+                  <h2>{% block title2 %} Registered Users {% endblock %}</h2>
+                  {% for post in posts %}
+                      <div class='post'>
+                          <p><b>{{ post['user'] }}</b></p>
+                          <p>{{ post['created'] }}</p>
+                      </div>
+                  {% endfor %}
+             </div>
+            </div>   
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $("video").prop('id', 'player');
+      var player = document.getElementById("player");
+      var captureButton = document.getElementById("capture");
+      var stopButton = document.getElementById("stop");
+      var handleSuccess = function (stream) {
+        player.srcObject = stream;
+      };
+      navigator.mediaDevices.getUserMedia({ video: true }).then(handleSuccess);
+      stopButton.addEventListener("click", function () {
+        stream = player.srcObject;
+        tracks = stream.getTracks();
+        tracks.forEach(function (track) {
+          track.stop();
+        });
+        player.srcObject = null;
+      });
+      captureButton.addEventListener("click", async function () {
+        Webcam.snap( function(data_uri) {
+          document.getElementById('console').innerHTML = '<form method="POST" enctype="multipart/form-data" id="myForm"></form>';
+          var form = document.getElementById('myForm');
+          var formData = new FormData(form);
+          formData.append("file", data_uri);
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.open("POST", "/analyse");
+          xmlhttp.send(formData);
+      } );      
+      });
+    </script>
+  </body>
+</html>
